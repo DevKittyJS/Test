@@ -1,19 +1,25 @@
-import express from "express"; 
+import express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from 'public' folder
-app.use(express.static(path.join(process.cwd(), "public")));
+// Serve frontend
+app.use(express.static(path.join(__dirname, "public")));
 
-// API endpoint
+app.get("/health", (req, res) => {
+  res.json({ ok: true, status: "alive" });
+});
+
 app.get("/api/icons", async (req, res) => {
   const API_KEY = process.env.API_KEY;
 
@@ -35,9 +41,9 @@ app.get("/api/icons", async (req, res) => {
   }
 });
 
-// Optional: fallback for any other routes to index.html (for single-page apps)
+// SPA fallback
 app.get("*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {
