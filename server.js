@@ -42,7 +42,7 @@ app.get("/api/icons", async (req, res) => {
 });
 
 // SPA fallback
-app.get("*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
