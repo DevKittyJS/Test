@@ -52,11 +52,11 @@ app.get("/api/loaders", async (req, res) => {
 });
 
 /* ================= TEST ================= */
-app.get("/api/secret-test", (req, res) => {
+app.get("/api/test", (req, res) => {
   res.json({
     ok: true,
-    message: "THE API Exists",
-    secretLoaded: Boolean(API_KEY)
+    message: "API is reachable",
+    secretLoaded: Boolean(process.env.API_KEY)
   });
 });
 
